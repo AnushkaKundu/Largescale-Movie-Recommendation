@@ -33,6 +33,7 @@ Hive is now running at `localhost:10002`:
 
 ## Create database
 ![img/put-csv.png](img/put-csv.png)
+![Screenshot from 2024-05-20 15-19-46](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/436ee464-24cd-4467-a084-0677663bfef7)
 
 Create tables: 
 ```mysql
@@ -42,23 +43,65 @@ CREATE EXTERNAL TABLE movies (
   title STRING,
   genres STRING
 )
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES (
+  "separatorChar" = ",",
+  "quoteChar" = "\"",
+  "escapeChar" = "\\"
+)
 STORED AS TEXTFILE
 LOCATION '/user/hive/warehouse/movielens/movies'
 TBLPROPERTIES ("skip.header.line.count"="1");
-
-# Ratings table
+```
+```mysql
 CREATE EXTERNAL TABLE ratings (
   userId INT,
   movieId INT,
   rating DOUBLE,
   rating_timestamp BIGINT
 )
-ROW FORMAT DELIMITED
-FIELDS TERMINATED BY ','
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES (
+  "separatorChar" = ",",
+  "quoteChar" = "\"",
+  "escapeChar" = "\\"
+)
 STORED AS TEXTFILE
 LOCATION '/user/hive/warehouse/movielens/ratings'
 TBLPROPERTIES ("skip.header.line.count"="1");
 ```
+```mysql
+CREATE EXTERNAL TABLE tags (
+  userId INT,
+  movieId INT,
+  tag STRING,
+  tag_timestamp BIGINT
+)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES (
+  "separatorChar" = ",",
+  "quoteChar" = "\"",
+  "escapeChar" = "\\"
+)
+STORED AS TEXTFILE
+LOCATION '/user/hive/warehouse/movielens/tags'
+TBLPROPERTIES ("skip.header.line.count"="1");
+```
+```mysql
+CREATE EXTERNAL TABLE links (
+  movieId INT,
+  imdbId INT,
+  tmdbId INT
+)
+ROW FORMAT SERDE 'org.apache.hadoop.hive.serde2.OpenCSVSerde'
+WITH SERDEPROPERTIES (
+  "separatorChar" = ",",
+  "quoteChar" = "\"",
+  "escapeChar" = "\\"
+)
+STORED AS TEXTFILE
+LOCATION '/user/hive/warehouse/movielens/links'
+TBLPROPERTIES ("skip.header.line.count"="1");
+```
 ![img/tables1.png](img/tables1.png)
+![Screenshot from 2024-05-20 15-42-33](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/c07c4402-290f-4990-8577-4c71a27eb9ff)
