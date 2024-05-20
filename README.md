@@ -29,3 +29,36 @@ hive --service metastore
 
 Hive is now running at `localhost:10002`: 
 ![web-hive-running](img/web-hive-running.png)
+
+
+## Create database
+![img/put-csv.png](img/put-csv.png)
+
+Create tables: 
+```mysql
+# Movies table
+CREATE EXTERNAL TABLE movies (
+  movieId INT,
+  title STRING,
+  genres STRING
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/hive/warehouse/movielens/movies'
+TBLPROPERTIES ("skip.header.line.count"="1");
+
+# Ratings table
+CREATE EXTERNAL TABLE ratings (
+  userId INT,
+  movieId INT,
+  rating DOUBLE,
+  rating_timestamp BIGINT
+)
+ROW FORMAT DELIMITED
+FIELDS TERMINATED BY ','
+STORED AS TEXTFILE
+LOCATION '/user/hive/warehouse/movielens/ratings'
+TBLPROPERTIES ("skip.header.line.count"="1");
+```
+![img/tables1.png](img/tables1.png)
