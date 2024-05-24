@@ -366,6 +366,14 @@ if st.button('Get Recommendations'):
 # if __name__ == '__main__':
 #     st.run()
 ```
+
+To run the app: 
+```bash
+streamlit run dashboard.py 
+```
+
+### Screenshots
+
 ![Screenshot from 2024-05-24 22-59-58](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/c34e5ad2-275f-463e-b768-57982e78c91c)
 ![Screenshot from 2024-05-24 23-00-40](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/f23da163-428a-499c-9d5f-73ecc79628df)
 ![Screenshot from 2024-05-24 23-01-08](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/ed882d17-5f84-4ac7-bf3d-0f7ae509da05)
