@@ -250,4 +250,3 @@ LEFT JOIN ratings r ON g.movieId = r.movieId
 GROUP BY userId, genre, movieId
 ORDER BY predicted_rating DESC;
 ```
-```
