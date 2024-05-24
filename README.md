@@ -1,3 +1,14 @@
+# About the project:
+The project is an attempt to use hadoop and hive to extract data from a large csv file and perform analysis of the data. Traditional sql may fail in case of large databases this is where hadoop's mapreduce comes handy to chunk the input data in parts and perform map-reduce queries to distribute the load.
+
+The final result is a simple dashboard that utilises streamlit to create a dashboard that presents the data in a more understandable manner.
+
+![6000ec24-150b-46c9-a208-23361cee5840.webm](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/a3d25069-55ed-4f9f-b08a-4bc51f14a5a4)
+
+The python code for the dashboard can be found at `dashboard.py`.
+
+# Setup
+
 ## Start Hadoop
 Start Hadoop Cluster
 ```
@@ -382,5 +393,6 @@ streamlit run dashboard.py
 ![Screenshot from 2024-05-24 23-02-00](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/687229b5-79cb-4437-ad59-03e41e8bab8d)
 ![Screenshot from 2024-05-24 23-02-15](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/7f0931e7-a967-41a9-9d5d-5956f527d328)
 ![Screenshot from 2024-05-24 23-02-26](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/409ea4ca-6b31-4fc7-979e-717c37054b81)
+
 
 
