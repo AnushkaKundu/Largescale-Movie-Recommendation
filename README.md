@@ -1,4 +1,4 @@
-![Screenshot from 2024-05-23 20-24-40](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/d9b47f9f-4fb0-48e2-b834-3d2b7372dc44)## Start Hadoop
+## Start Hadoop
 Start Hadoop Cluster
 ```
 start-all.sh
