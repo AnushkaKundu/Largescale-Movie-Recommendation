@@ -3,7 +3,7 @@ The project is an attempt to use hadoop and hive to extract data from a large cs
 
 The final result is a simple dashboard that utilises streamlit to create a dashboard that presents the data in a more understandable manner.
 
-![6000ec24-150b-46c9-a208-23361cee5840.webm](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/a3d25069-55ed-4f9f-b08a-4bc51f14a5a4)
+[Project Video](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/a3d25069-55ed-4f9f-b08a-4bc51f14a5a4)
 
 The python code for the dashboard can be found at `dashboard.py`.
 
@@ -41,8 +41,10 @@ hive --service metastore
 Hive is now running at `localhost:10002`: 
 ![web-hive-running](img/web-hive-running.png)
 
+<!--
 ## Start Spark
 ![Screenshot from 2024-05-23 19-57-43](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/c37eb3ed-ef67-41af-b822-153712f6cb62)
+-->
 
 ## Create database
 ![img/put-csv.png](img/put-csv.png)
