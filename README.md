@@ -143,6 +143,16 @@ ORDER BY avg_rating DESC;
 ![Screenshot from 2024-05-23 20-17-46](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/cff63dea-3bdc-4442-a4cd-4100c6ffde27)
 
 ```mysql
+CREATE TABLE top_movies_by_genre AS
+SELECT g.genre, m.movieId, m.title, AVG(r.rating) AS avg_rating
+FROM movies m
+JOIN movies_by_genre g ON m.movieId = g.movieId
+JOIN ratings r ON m.movieId = r.movieId
+GROUP BY g.genre, m.movieId, m.title
+ORDER BY g.genre, avg_rating DESC;
+```
+
+```mysql
 CREATE TABLE movies_by_genre AS
 SELECT movieId, genre
 FROM movies
@@ -193,6 +203,7 @@ FROM movies_by_genre m1
 JOIN movies_by_genre m2 ON m1.genre = m2.genre AND m1.movieId != m2.movieId
 GROUP BY m1.movieId, m2.movieId;
 ```
+![Screenshot from 2024-05-24 22-16-28](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/7d43671b-bfb3-4859-9fc7-9392eb85a896)
 
 ### Hybrid Similarities
 ```mysql
@@ -201,6 +212,8 @@ SELECT c.movieId1, c.movieId2, (c.similarity + g.similarity) / 2 AS hybrid_simil
 FROM movie_similarities c
 JOIN genre_similarities g ON c.movieId1 = g.movieId1 AND c.movieId2 = g.movieId2;
 ```
+![Screenshot from 2024-05-24 22-17-16](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/a147d9a3-1147-4761-9cf6-f6e705f3450e)
+
 
 ### Trend Analysis
 ```mysql
@@ -211,16 +224,16 @@ JOIN movies m ON r.movieId = m.movieId
 JOIN movies_by_genre g ON m.movieId = g.movieId
 GROUP BY year, genre;
 ```
+![Screenshot from 2024-05-24 22-17-43](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/ed6a81e1-7649-46a8-9287-6d2842a97bc8)
 
 ### Seasonal Effects
 ```mysql
-CREATE TABLE user_profiles AS
-SELECT userId, genre, AVG(rating) AS avg_rating
-FROM ratings r
-JOIN movies m ON r.movieId = m.movieId
-JOIN movies_by_genre g ON m.movieId = g.movieId
-GROUP BY userId, genre;
+CREATE TABLE seasonal_effects AS
+SELECT MONTH(FROM_UNIXTIME(CAST(rating_timestamp AS BIGINT))) AS month, COUNT(*) AS count
+FROM ratings
+GROUP BY MONTH(FROM_UNIXTIME(CAST(rating_timestamp AS BIGINT)));
 ```
+![Screenshot from 2024-05-24 22-18-05](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/e2e36fd2-45a2-4adf-855d-5707b895af27)
 
 ###  User Clustering and Profiling
 ```mysql
@@ -231,6 +244,7 @@ JOIN movies m ON r.movieId = m.movieId
 JOIN movies_by_genre g ON m.movieId = g.movieId
 GROUP BY userId, genre;
 ```
+![Screenshot from 2024-05-24 22-18-24](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/4a3a9653-4acd-44c6-acda-f416300d87d4)
 
 ### User Engagement
 ```mysql
@@ -239,9 +253,10 @@ SELECT userId, COUNT(*) AS num_ratings, AVG(rating) AS avg_rating
 FROM ratings
 GROUP BY userId;
 ```
+![Screenshot from 2024-05-24 22-18-53](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/31fb0562-4573-4eef-a098-1cf84ec26d05)
 
 ### Genre Recommendations
-````mysql
+```mysql
 CREATE TABLE genre_recommendations AS
 SELECT userId, genre, movieId, AVG(rating) AS predicted_rating
 FROM user_profiles p
@@ -250,3 +265,4 @@ LEFT JOIN ratings r ON g.movieId = r.movieId
 GROUP BY userId, genre, movieId
 ORDER BY predicted_rating DESC;
 ```
+![Screenshot from 2024-05-24 22-19-36](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/56a77072-1008-4b16-a769-68f28cab98b1)
