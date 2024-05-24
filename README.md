@@ -164,3 +164,90 @@ FROM movies_by_genre
 JOIN ratings ON movies_by_genre.movieId = ratings.movieId
 GROUP BY genre;
 ```
+![Screenshot from 2024-05-24 18-50-21](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/2396654f-b3b9-4bd0-81e7-535481cc6d55)
+
+## Movie Recommendation System: Collaborative Filtering
+```mysql
+CREATE TABLE user_movie_matrix AS
+SELECT userId, movieId, rating
+FROM ratings;
+```
+
+### Movie Similarities (Collaborative Filtering)
+```mysql
+CREATE TABLE movie_similarities AS
+SELECT m1.movieId AS movieId1, m2.movieId AS movieId2, 
+       SUM(m1.rating * m2.rating) / (SQRT(SUM(m1.rating * m1.rating)) * SQRT(SUM(m2.rating * m2.rating))) AS similarity
+FROM user_movie_matrix m1
+JOIN user_movie_matrix m2 ON m1.userId = m2.userId AND m1.movieId != m2.movieId
+GROUP BY m1.movieId, m2.movieId;
+```
+![Screenshot from 2024-05-24 18-46-48](https://github.com/AnushkaKundu/Hive-and-Hadoop-setup-and-usage/assets/97175497/e3183052-949e-4a8f-9130-3fd824ae2c44)
+
+### Genre Similarities (Content-Based Filtering)
+```mysql
+CREATE TABLE genre_similarities AS
+SELECT m1.movieId AS movieId1, m2.movieId AS movieId2, 
+       COUNT(*) AS similarity
+FROM movies_by_genre m1
+JOIN movies_by_genre m2 ON m1.genre = m2.genre AND m1.movieId != m2.movieId
+GROUP BY m1.movieId, m2.movieId;
+```
+
+### Hybrid Similarities
+```mysql
+CREATE TABLE hybrid_similarities AS
+SELECT c.movieId1, c.movieId2, (c.similarity + g.similarity) / 2 AS hybrid_similarity
+FROM movie_similarities c
+JOIN genre_similarities g ON c.movieId1 = g.movieId1 AND c.movieId2 = g.movieId2;
+```
+
+### Trend Analysis
+```mysql
+CREATE TABLE movie_trends AS
+SELECT YEAR(FROM_UNIXTIME(timestamp)) AS year, genre, COUNT(*) AS count
+FROM ratings r
+JOIN movies m ON r.movieId = m.movieId
+JOIN movies_by_genre g ON m.movieId = g.movieId
+GROUP BY year, genre;
+```
+
+### Seasonal Effects
+```mysql
+CREATE TABLE user_profiles AS
+SELECT userId, genre, AVG(rating) AS avg_rating
+FROM ratings r
+JOIN movies m ON r.movieId = m.movieId
+JOIN movies_by_genre g ON m.movieId = g.movieId
+GROUP BY userId, genre;
+```
+
+###  User Clustering and Profiling
+```mysql
+CREATE TABLE user_profiles AS
+SELECT userId, genre, AVG(rating) AS avg_rating
+FROM ratings r
+JOIN movies m ON r.movieId = m.movieId
+JOIN movies_by_genre g ON m.movieId = g.movieId
+GROUP BY userId, genre;
+```
+
+### User Engagement
+```mysql
+CREATE TABLE user_engagement AS
+SELECT userId, COUNT(*) AS num_ratings, AVG(rating) AS avg_rating
+FROM ratings
+GROUP BY userId;
+```
+
+### Genre Recommendations
+````mysql
+CREATE TABLE genre_recommendations AS
+SELECT userId, genre, movieId, AVG(rating) AS predicted_rating
+FROM user_profiles p
+JOIN movies_by_genre g ON p.genre = g.genre
+LEFT JOIN ratings r ON g.movieId = r.movieId
+GROUP BY userId, genre, movieId
+ORDER BY predicted_rating DESC;
+```
+```
